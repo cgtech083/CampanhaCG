@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesquisa Eleitoral & Campo</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 650px; margin: 20px auto; padding: 15px; background: #f4f4f9; }
+    .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    input[type="text"], input[type="number"], input[type="tel"], input[type="date"], input[type="email"], input[type="password"], textarea, select {
+      width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;
+    }
+    .radio-group, .checkbox-group { margin-top: 5px; }
+    .radio-group label, .checkbox-group label { font-weight: normal; display: block; margin-bottom: 3px; }
+    .hidden { display: none; }
+    button { background: #007bff; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 15px; }
+    button:hover { background: #0056b3; }
+    .gps-status { font-size: 12px; color: #666; margin-top: 5px; }
+  </style>
+</head>
+<body>
+
+  <!-- TELA DE LOGIN -->
+  <div id="login-screen" class="card">
+    <h2>Acesso do Pesquisador</h2>
+    <form id="form-login">
+      <label>E-mail:</label>
+      <input type="email" id="login-email" required>
+      <label>Senha:</label>
+      <input type="password" id="login-password" required>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+
+  <!-- FORMULÁRIO PRINCIPAL -->
+  <div id="app-screen" class="card hidden">
+    <h2>Questionário de Campo</h2>
+    <form id="form-pesquisa">
+      
+      <input type="hidden" id="lat">
+      <input type="hidden" id="long">
+      <div id="gps-info" class="gps-status">Obtendo localização GPS...</div>
+
+      <label>Nome completo:</label>
+      <input type="text" id="nome_completo" required>
+
+      <label>Endereço com número da casa:</label>
+      <input type="text" id="endereco_numero" required>
+
+      <label>Bairro:</label>
+      <input type="text" id="bairro" required>
+
+      <label>Telefone:</label>
+      <input type="tel" id="telefone" required>
+
+      <label>Número de pessoas da casa:</label>
+      <input type="number" id="num_pessoas" required>
+
+      <label>Intenção de Voto - Governador (Escolha 1):</label>
+      <div class="radio-group">
+        <label><input type="radio" name="gov" value="LUCAS RIBEIRO" required> LUCAS RIBEIRO</label>
+        <label><input type="radio" name="gov" value="CAMILO DUARTE"> CAMILO DUARTE</label>
+        <label><input type="radio" name="gov" value="CÍCERO LUCENA"> CÍCERO LUCENA</label>
+        <label><input type="radio" name="gov" value="EFRAIM FILHO"> EFRAIM FILHO</label>
+        <label><input type="radio" name="gov" value="PEDRO COUTINHO"> PEDRO COUTINHO</label>
+        <label><input type="radio" name="gov" value="YURI EZEQUIEL"> YURI EZEQUIEL</label>
+      </div>
+
+      <label>Intenção de Voto - Senador (Escolha até 2):</label>
+      <div class="checkbox-group" id="senador-group">
+        <label><input type="checkbox" name="senador" value="ADRIANO TRAJANO"> ADRIANO TRAJANO</label>
+        <label><input type="checkbox" name="senador" value="ANDRÉ GADELHA"> ANDRÉ GADELHA</label>
+        <label><input type="checkbox" name="senador" value="DR. MARCELO QUEIROGA"> DR. MARCELO QUEIROGA</label>
+        <label><input type="checkbox" name="senador" value="JOAO AZEVÊDO"> JOAO AZEVÊDO</label>
+        <label><input type="checkbox" name="senador" value="JOÃO BATISTA"> JOÃO BATISTA</label>
+        <label><input type="checkbox" name="senador" value="MAJOR FÁBIO"> MAJOR FÁBIO</label>
+        <label><input type="checkbox" name="senador" value="NABOR"> NABOR</label>
+        <label><input type="checkbox" name="senador" value="RINALDO JÚNIOR"> RINALDO JÚNIOR</label>
+        <label><input type="checkbox" name="senador" value="ROSILENE SANTANA"> ROSILENE SANTANA</label>
+        <label><input type="checkbox" name="senador" value="VENEZIANO"> VENEZIANO</label>
+      </div>
+
+      <label>Deputado Estadual:</label>
+      <input type="text" id="deputado_estadual">
+
+      <label>Deputado Federal:</label>
+      <input type="text" id="deputado_federal">
+
+      <label>Intenção de Voto - Presidente (Escolha 1):</label>
+      <div class="radio-group">
+        <label><input type="radio" name="pres" value="CLARIANA BARAO" required> CLARIANA BARAO</label>
+        <label><input type="radio" name="pres" value="EDMILSON COSTA"> EDMILSON COSTA</label>
+        <label><input type="radio" name="pres" value="ESCRITOR AUGUSTO CURY"> ESCRITOR AUGUSTO CURY</label>
+        <label><input type="radio" name="pres" value="FLAVIO BOLSONARO"> FLAVIO BOLSONARO</label>
+        <label><input type="radio" name="pres" value="HERTZ DIAS"> HERTZ DIAS</label>
+        <label><input type="radio" name="pres" value="LEONARDO AVALANCHE"> LEONARDO AVALANCHE</label>
+        <label><input type="radio" name="pres" value="LULA"> LULA</label>
+        <label><input type="radio" name="pres" value="PABLO MARÇAL"> PABLO MARÇAL</label>
+        <label><input type="radio" name="pres" value="RENAN SANTOS"> RENAN SANTOS</label>
+        <label><input type="radio" name="pres" value="RONALDO CAIADO"> RONALDO CAIADO</label>
+        <label><input type="radio" name="pres" value="RUI COSTA PIMENTA"> RUI COSTA PIMENTA</label>
+        <label><input type="radio" name="pres" value="SAMARA"> SAMARA</label>
+        <label><input type="radio" name="pres" value="VETERINÁRIO WILSON GRASSI"> VETERINÁRIO WILSON GRASSI</label>
+        <label><input type="radio" name="pres" value="ZEMA"> ZEMA</label>
+      </div>
+
+      <label>Avaliação Governo Estadual:</label>
+      <div class="radio-group">
+        <label><input type="radio" name="aval_gov" value="Pessimo" required> Péssimo</label>
+        <label><input type="radio" name="aval_gov" value="Ruim"> Ruim</label>
+        <label><input type="radio" name="aval_gov" value="Bom"> Bom</label>
+        <label><input type="radio" name="aval_gov" value="Otimo"> Ótimo</label>
+        <label><input type="radio" name="aval_gov" value="NaoQuisOptar"> Não Quis Optar</label>
+      </div>
+
+      <label>Observação:</label>
+      <textarea id="observacao" rows="3"></textarea>
+
+      <label>Demanda Saúde?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="demanda_saude" value="SIM" onclick="toggleSaude(true)" required> SIM</label>
+        <label><input type="radio" name="demanda_saude" value="NAO" onclick="toggleSaude(false)"> NÃO</label>
+      </div>
+
+      <!-- SEÇÃO SAÚDE CONDICIONAL -->
+      <div id="secao-saude" class="hidden" style="border-left: 3px solid #007bff; padding-left: 10px; margin-top: 15px;">
+        <h3>Dados de Demanda de Saúde</h3>
+        
+        <label>Nome do Paciente:</label>
+        <input type="text" id="saude_nome">
+
+        <label>CPF:</label>
+        <input type="text" id="saude_cpf">
+
+        <label>Endereço:</label>
+        <input type="text" id="saude_endereco">
+
+        <label>Telefone:</label>
+        <input type="tel" id="saude_telefone">
+
+        <label>Data de Nascimento:</label>
+        <input type="date" id="saude_data_nasc">
+
+        <label>Cartão do SUS:</label>
+        <input type="text" id="saude_cartao_sus">
+
+        <label>Tipo de Procedimento:</label>
+        <textarea id="saude_procedimento" rows="2"></textarea>
+
+        <label>Tem requisição?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="saude_requisicao" value="SIM"> Sim</label>
+          <label><input type="radio" name="saude_requisicao" value="NAO"> Não</label>
+        </div>
+
+        <label>Disponibilidade para atendimento em João Pessoa ou outras cidades:</label>
+        <div class="radio-group">
+          <label><input type="radio" name="saude_disponibilidade" value="SIM"> Sim</label>
+          <label><input type="radio" name="saude_disponibilidade" value="NAO"> Não</label>
+        </div>
+      </div>
+
+      <button type="submit">Enviar Questionário</button>
+    </form>
+  </div>
+
+  <script>
+    // Configurações do Banco de Dados Supabase (Substitua pelos seus dados)
+    const SUPABASE_URL = 'https://SUA_URL_AQUI.supabase.co';
+    const SUPABASE_KEY = 'SUA_KEY_ANON_AQUI';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Validação de Limite de Senadores (Máximo 2)
+    const senadores = document.querySelectorAll('input[name="senador"]');
+    senadores.forEach(box => {
+      box.addEventListener('change', () => {
+        const checked = document.querySelectorAll('input[name="senador"]:checked');
+        if (checked.length > 2) {
+          box.checked = false;
+          alert('Você só pode selecionar até 2 senadores.');
+        }
+      });
+    });
+
+    // Exibir/Ocultar campos de Saúde
+    function toggleSaude(show) {
+      document.getElementById('secao-saude').classList.toggle('hidden', !show);
+    }
+
+    // Captura da Localização GPS
+    function capturarGPS() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          document.getElementById('lat').value = pos.coords.latitude;
+          document.getElementById('long').value = pos.coords.longitude;
+          document.getElementById('gps-info').innerText = `GPS Capturado: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+        }, () => {
+          document.getElementById('gps-info').innerText = "Atenção: Permissão de GPS negada pelo usuário.";
+        });
+      }
+    }
+
+    // Autenticação de Usuário
+    document.getElementById('form-login').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        alert('Falha na autenticação: ' + error.message);
+      } else {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('app-screen').classList.remove('hidden');
+        capturarGPS();
+      }
+    });
+
+    // Envio do Formulário
+    document.getElementById('form-pesquisa').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const senadoresSel = Array.from(document.querySelectorAll('input[name="senador"]:checked')).map(el => el.value);
+
+      const payload = {
+        lat: document.getElementById('lat').value,
+        long: document.getElementById('long').value,
+        nome_completo: document.getElementById('nome_completo').value,
+        endereco_numero: document.getElementById('endereco_numero').value,
+        bairro: document.getElementById('bairro').value,
+        telefone: document.getElementById('telefone').value,
+        num_pessoas: document.getElementById('num_pessoas').value,
+        governador: document.querySelector('input[name="gov"]:checked')?.value,
+        senadores: senadoresSel,
+        deputado_estadual: document.getElementById('deputado_estadual').value,
+        deputado_federal: document.getElementById('deputado_federal').value,
+        presidente: document.querySelector('input[name="pres"]:checked')?.value,
+        avaliacao_gov: document.querySelector('input[name="aval_gov"]:checked')?.value,
+        observacao: document.getElementById('observacao').value,
+        demanda_saude: document.querySelector('input[name="demanda_saude"]:checked')?.value,
+        saude_nome: document.getElementById('saude_nome').value,
+        saude_cpf: document.getElementById('saude_cpf').value,
+        saude_endereco: document.getElementById('saude_endereco').value,
+        saude_telefone: document.getElementById('saude_telefone').value,
+        saude_data_nasc: document.getElementById('saude_data_nasc').value,
+        saude_cartao_sus: document.getElementById('saude_cartao_sus').value,
+        saude_procedimento: document.getElementById('saude_procedimento').value,
+        saude_requisicao: document.querySelector('input[name="saude_requisicao"]:checked')?.value,
+        saude_disponibilidade: document.querySelector('input[name="saude_disponibilidade"]:checked')?.value
+      };
+
+      const { error } = await _supabase.from('respostas').insert([payload]);
+
+      if (error) {
+        alert('Erro ao salvar resposta: ' + error.message);
+      } else {
+        alert('Questionário gravado com sucesso!');
+        document.getElementById('form-pesquisa').reset();
+        toggleSaude(false);
+        capturarGPS();
+      }
+    });
+  </script>
+</body>
+</html>
