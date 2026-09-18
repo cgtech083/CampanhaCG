@@ -6,48 +6,38 @@
   <title>Pesquisa Eleitoral & Campo</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 950px; margin: 20px auto; padding: 15px; background: #f4f4f9; }
-    .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
-    label { font-weight: bold; display: block; margin-top: 10px; }
-    input[type="text"], input[type="number"], input[type="tel"], input[type="date"], input[type="email"], input[type="password"], textarea, select {
-      width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --dark-header: #0d1b2a;
+      --text-main: #334155;
+      --text-label: #475569;
+      --border-color: #cbd5e1;
+      --bg-body: #f1f5f9;
     }
-    .radio-group, .checkbox-group { margin-top: 5px; }
-    .radio-group label, .checkbox-group label { font-weight: normal; display: block; margin-bottom: 3px; }
-    .hidden { display: none; }
-    button { background: #007bff; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 15px; }
-    button:hover { background: #0056b3; }
-    .btn-secondary { background: #6c757d; width: auto; padding: 6px 12px; font-size: 14px; }
-    .btn-secondary:hover { background: #5a6268; }
-    .btn-success { background: #28a745; width: auto; padding: 8px 16px; font-size: 14px; }
-    .btn-success:hover { background: #218838; }
-    .gps-status { font-size: 12px; color: #666; margin-top: 5px; font-weight: bold; }
-    
-    /* Layout Painel Coordenador */
-    .top-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
-    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
-    .kpi-card { background: #e9ecef; padding: 15px; border-radius: 6px; text-align: center; border-left: 4px solid #007bff; }
-    .kpi-card h3 { margin: 0; font-size: 28px; color: #007bff; }
-    .kpi-card p { margin: 5px 0 0; font-size: 14px; color: #555; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background: #f8f9fa; }
-    .filter-group { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; align-items: center; }
-    .filter-group select, .filter-group input { flex: 1; min-width: 150px; }
-    .table-responsive { overflow-x: auto; }
 
-    /* Novo Design - Tela de Login */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-body);
+      color: var(--text-main);
+      margin: 0;
+      padding: 20px 10px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      margin: 20px auto;
+    }
+
+    /* TELA DE LOGIN */
     #login-screen {
       max-width: 420px;
-      margin: 40px auto;
-      padding: 0;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      background: #ffffff;
     }
     .login-header {
-      background: #0d1b2a;
+      background: var(--dark-header);
       color: #ffffff;
       padding: 35px 20px 25px;
       text-align: center;
@@ -55,7 +45,7 @@
     .login-avatar-icon {
       width: 60px;
       height: 60px;
-      background: #2563eb;
+      background: var(--primary-color);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -67,7 +57,6 @@
       margin: 0 0 8px;
       font-size: 22px;
       font-weight: 700;
-      color: #ffffff;
     }
     .login-header p {
       margin: 0;
@@ -77,15 +66,44 @@
     .login-body {
       padding: 25px 30px 35px;
     }
-    .login-label {
+
+    /* ESTILOS DE FORMULÁRIO PADRONIZADOS */
+    label.form-label {
       font-size: 12px;
       font-weight: 700;
-      color: #475569;
+      color: var(--text-label);
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      margin-top: 15px;
+      margin-top: 18px;
       margin-bottom: 6px;
+      display: block;
     }
+
+    input[type="text"], 
+    input[type="number"], 
+    input[type="tel"], 
+    input[type="date"], 
+    input[type="email"], 
+    input[type="password"], 
+    textarea, 
+    select {
+      width: 100%;
+      padding: 10px 14px;
+      box-sizing: border-box;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--text-main);
+      background: #ffffff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
     .input-with-icon {
       position: relative;
       display: flex;
@@ -99,39 +117,133 @@
       fill: #94a3b8;
     }
     .input-with-icon input {
-      padding-left: 40px !important;
-      border-radius: 10px !important;
-      border: 1px solid #cbd5e1 !important;
-      height: 44px;
-      font-size: 14px;
-      color: #334155;
-      background: #ffffff;
+      padding-left: 40px;
     }
-    .input-with-icon input:focus {
-      outline: none;
-      border-color: #2563eb !important;
-    }
-    .btn-login {
-      background: #2563eb !important;
-      border-radius: 10px !important;
-      height: 46px;
-      font-size: 15px !important;
-      font-weight: 600;
+
+    /* GRUPOS DE RADIO E CHECKBOX */
+    .option-card {
       display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      background: #f8fafc;
+      transition: background 0.2s, border-color 0.2s;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .option-card:hover {
+      background: #eff6ff;
+      border-color: var(--primary-color);
+    }
+    .option-card input {
+      margin-right: 12px;
+      accent-color: var(--primary-color);
+      width: 16px;
+      height: 16px;
+    }
+
+    /* BOTÕES */
+    button, .btn-primary {
+      background: var(--primary-color);
+      color: #ffffff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      margin-top: 25px !important;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      transition: background 0.2s;
+      width: 100%;
+      margin-top: 20px;
     }
-    .btn-login:hover {
-      background: #1d4ed8 !important;
+    button:hover { background: var(--primary-hover); }
+    
+    .btn-secondary {
+      background: #64748b;
+      box-shadow: none;
+      width: auto;
+      padding: 8px 16px;
+      font-size: 13px;
     }
+    .btn-secondary:hover { background: #475569; }
+
+    .btn-success {
+      background: #10b981;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+      width: auto;
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+    .btn-success:hover { background: #059669; }
+
+    /* LAYOUT TELA DE FORMULÁRIO E COORDENADOR */
+    #app-screen, #coordinator-screen {
+      max-width: 800px;
+    }
+    .header-banner {
+      background: var(--dark-header);
+      color: #ffffff;
+      padding: 24px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .header-banner h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .header-banner .user-tag {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+    .form-container {
+      padding: 25px 30px 35px;
+    }
+
+    .gps-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    /* REGRAS DE EXIBIÇÃO */
+    .hidden { display: none !important; }
+
+    /* DASHBOARD COORDENADOR */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin: 20px 0; }
+    .kpi-card { background: #f8fafc; padding: 16px; border-radius: 12px; text-align: center; border: 1px solid var(--border-color); }
+    .kpi-card h3 { margin: 0; font-size: 26px; color: var(--primary-color); }
+    .kpi-card p { margin: 4px 0 0; font-size: 12px; color: #64748b; font-weight: 600; }
+    
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+    th, td { border-bottom: 1px solid #e2e8f0; padding: 10px; text-align: left; }
+    th { background: #f8fafc; color: var(--text-label); font-weight: 700; }
+    .filter-group { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+    .filter-group select, .filter-group input { flex: 1; min-width: 150px; }
+    .table-responsive { overflow-x: auto; }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN FABRIC -->
+  <!-- LOGIN -->
   <div id="login-screen" class="card">
     <div class="login-header">
       <div class="login-avatar-icon">
@@ -144,7 +256,7 @@
     </div>
     <div class="login-body">
       <form id="form-login">
-        <label class="login-label">E-MAIL</label>
+        <label class="form-label">E-MAIL</label>
         <div class="input-with-icon">
           <svg viewBox="0 0 24 24">
             <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
@@ -152,7 +264,7 @@
           <input type="email" id="login-email" required placeholder="exemplo@eleicoes.com">
         </div>
 
-        <label class="login-label">SENHA</label>
+        <label class="form-label">SENHA</label>
         <div class="input-with-icon">
           <svg viewBox="0 0 24 24">
             <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
@@ -160,7 +272,7 @@
           <input type="password" id="login-password" required placeholder="••••••••">
         </div>
 
-        <button type="submit" class="btn-login">
+        <button type="submit">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/>
           </svg>
@@ -172,230 +284,230 @@
 
   <!-- PAINEL DO COORDENADOR -->
   <div id="coordinator-screen" class="card hidden">
-    <div class="top-bar">
+    <div class="header-banner">
       <div>
-        <h2 style="margin: 0;">Painel de Controle da Coordenação</h2>
-        <span id="coord-user-info" style="font-size: 13px; color: #666;"></span>
+        <h2>Painel de Controle da Coordenação</h2>
+        <div id="coord-user-info" class="user-tag"></div>
       </div>
-      <div>
-        <button type="button" onclick="exportarExcel()" class="btn-success">Exportar para Excel (CSV)</button>
+      <div style="display: flex; gap: 8px;">
+        <button type="button" onclick="exportarExcel()" class="btn-success">Exportar (CSV)</button>
         <button type="button" onclick="logout()" class="btn-secondary">Sair</button>
       </div>
     </div>
 
-    <!-- CARDS DE METRICAS -->
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <h3 id="total-hoje">0</h3>
-        <p>Pesquisas Hoje</p>
+    <div class="form-container">
+      <div class="kpi-grid">
+        <div class="kpi-card"><h3 id="total-hoje">0</h3><p>Pesquisas Hoje</p></div>
+        <div class="kpi-card"><h3 id="total-semana">0</h3><p>Últimos 7 Dias</p></div>
+        <div class="kpi-card"><h3 id="total-mes">0</h3><p>Mês Atual</p></div>
+        <div class="kpi-card"><h3 id="total-saude">0</h3><p>Demandas de Saúde</p></div>
       </div>
-      <div class="kpi-card">
-        <h3 id="total-semana">0</h3>
-        <p>Últimos 7 Dias</p>
+
+      <label class="form-label">Rendimento da Equipe de Campo</label>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Pesquisador (E-mail)</th>
+              <th>Hoje</th>
+              <th>Últimos 7 Dias</th>
+              <th>Mês</th>
+              <th>Total Geral</th>
+            </tr>
+          </thead>
+          <tbody id="table-pesquisadores">
+            <tr><td colspan="5">Carregando métricas da equipe...</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="kpi-card">
-        <h3 id="total-mes">0</h3>
-        <p>Mês Atual</p>
+
+      <br><hr style="border:0; border-top: 1px solid #e2e8f0;"><br>
+
+      <label class="form-label">Relatório Geral de Visitas</label>
+      <div class="filter-group">
+        <select id="filter-periodo" onchange="renderizarRespostasCoordenador()">
+          <option value="todos">Todos os Períodos</option>
+          <option value="hoje">Apenas Hoje</option>
+          <option value="semana">Últimos 7 Dias</option>
+          <option value="mes">Mês Atual</option>
+        </select>
+        <select id="filter-pesquisador" onchange="renderizarRespostasCoordenador()">
+          <option value="todos">Todos os Pesquisadores</option>
+        </select>
+        <input type="text" id="filter-busca" placeholder="Buscar Entrevistado, Bairro..." onkeyup="renderizarRespostasCoordenador()">
       </div>
-      <div class="kpi-card">
-        <h3 id="total-saude">0</h3>
-        <p>Demandas de Saúde</p>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Data/Hora</th>
+              <th>Pesquisador</th>
+              <th>Entrevistado</th>
+              <th>Bairro</th>
+              <th>Telefone</th>
+              <th>Gov. Preferido</th>
+              <th>Saúde?</th>
+              <th>Localização</th>
+            </tr>
+          </thead>
+          <tbody id="table-respostas">
+            <tr><td colspan="8">Carregando questionários...</td></tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-
-    <!-- DESEMPENHO DA EQUIPE -->
-    <h3>Rendimento da Equipe de Campo</h3>
-    <div class="table-responsive">
-      <table>
-        <thead>
-          <tr>
-            <th>Pesquisador (E-mail)</th>
-            <th>Hoje</th>
-            <th>Últimos 7 Dias</th>
-            <th>Mês</th>
-            <th>Total Geral</th>
-          </tr>
-        </thead>
-        <tbody id="table-pesquisadores">
-          <tr><td colspan="5">Carregando métricas da equipe...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <br><hr><br>
-
-    <!-- LISTA COMPLETA E FILTROS -->
-    <h3>Relatório Geral de Visitas</h3>
-    <div class="filter-group">
-      <select id="filter-periodo" onchange="renderizarRespostasCoordenador()">
-        <option value="todos">Todos os Períodos</option>
-        <option value="hoje">Apenas Hoje</option>
-        <option value="semana">Últimos 7 Dias</option>
-        <option value="mes">Mês Atual</option>
-      </select>
-      <select id="filter-pesquisador" onchange="renderizarRespostasCoordenador()">
-        <option value="todos">Todos os Pesquisadores</option>
-      </select>
-      <input type="text" id="filter-busca" placeholder="Buscar Entrevistado, Bairro..." onkeyup="renderizarRespostasCoordenador()">
-    </div>
-
-    <div class="table-responsive">
-      <table>
-        <thead>
-          <tr>
-            <th>Data/Hora</th>
-            <th>Pesquisador</th>
-            <th>Entrevistado</th>
-            <th>Bairro</th>
-            <th>Telefone</th>
-            <th>Gov. Preferido</th>
-            <th>Saúde?</th>
-            <th>Localização</th>
-          </tr>
-        </thead>
-        <tbody id="table-respostas">
-          <tr><td colspan="8">Carregando questionários...</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
   <!-- FORMULÁRIO PRINCIPAL (PESQUISADOR) -->
   <div id="app-screen" class="card hidden">
-    <div class="top-bar">
-      <h2>Questionário de Campo</h2>
+    <div class="header-banner">
       <div>
-        <span id="pesq-user-info" style="font-size: 14px; margin-right: 10px; font-weight: bold;"></span>
-        <button type="button" onclick="logout()" class="btn-secondary">Sair</button>
+        <h2>Questionário de Campo</h2>
+        <div id="pesq-user-info" class="user-tag"></div>
       </div>
+      <button type="button" onclick="logout()" class="btn-secondary">Sair</button>
     </div>
 
-    <form id="form-pesquisa">
-      <input type="hidden" id="lat">
-      <input type="hidden" id="long">
-      <div id="gps-info" class="gps-status">Aguardando localização GPS...</div>
-
-      <label>Nome completo:</label>
-      <input type="text" id="nome_completo" required>
-
-      <label>Endereço com número da casa:</label>
-      <input type="text" id="endereco_numero" required placeholder="Aguardando GPS...">
-
-      <label>Bairro:</label>
-      <input type="text" id="bairro" required placeholder="Aguardando GPS...">
-
-      <label>Telefone:</label>
-      <input type="tel" id="telefone" required>
-
-      <label>Número de pessoas da casa:</label>
-      <input type="number" id="num_pessoas" required>
-
-      <label>Intenção de Voto - Governador (Escolha 1):</label>
-      <div class="radio-group">
-        <label><input type="radio" name="gov" value="LUCAS RIBEIRO" required> LUCAS RIBEIRO</label>
-        <label><input type="radio" name="gov" value="CAMILO DUARTE"> CAMILO DUARTE</label>
-        <label><input type="radio" name="gov" value="CÍCERO LUCENA"> CÍCERO LUCENA</label>
-        <label><input type="radio" name="gov" value="EFRAIM FILHO"> EFRAIM FILHO</label>
-        <label><input type="radio" name="gov" value="PEDRO COUTINHO"> PEDRO COUTINHO</label>
-        <label><input type="radio" name="gov" value="YURI EZEQUIEL"> YURI EZEQUIEL</label>
-      </div>
-
-      <label>Intenção de Voto - Senador (Escolha até 2):</label>
-      <div class="checkbox-group" id="senador-group">
-        <label><input type="checkbox" name="senador" value="ADRIANO TRAJANO"> ADRIANO TRAJANO</label>
-        <label><input type="checkbox" name="senador" value="ANDRÉ GADELHA"> ANDRÉ GADELHA</label>
-        <label><input type="checkbox" name="senador" value="DR. MARCELO QUEIROGA"> DR. MARCELO QUEIROGA</label>
-        <label><input type="checkbox" name="senador" value="JOAO AZEVÊDO"> JOAO AZEVÊDO</label>
-        <label><input type="checkbox" name="senador" value="JOÃO BATISTA"> JOÃO BATISTA</label>
-        <label><input type="checkbox" name="senador" value="MAJOR FÁBIO"> MAJOR FÁBIO</label>
-        <label><input type="checkbox" name="senador" value="NABOR"> NABOR</label>
-        <label><input type="checkbox" name="senador" value="RINALDO JÚNIOR"> RINALDO JÚNIOR</label>
-        <label><input type="checkbox" name="senador" value="ROSILENE SANTANA"> ROSILENE SANTANA</label>
-        <label><input type="checkbox" name="senador" value="VENEZIANO"> VENEZIANO</label>
-      </div>
-
-      <label>Deputado Estadual:</label>
-      <input type="text" id="deputado_estadual">
-
-      <label>Deputado Federal:</label>
-      <input type="text" id="deputado_federal">
-
-      <label>Intenção de Voto - Presidente (Escolha 1):</label>
-      <div class="radio-group">
-        <label><input type="radio" name="pres" value="CLARIANA BARAO" required> CLARIANA BARAO</label>
-        <label><input type="radio" name="pres" value="EDMILSON COSTA"> EDMILSON COSTA</label>
-        <label><input type="radio" name="pres" value="ESCRITOR AUGUSTO CURY"> ESCRITOR AUGUSTO CURY</label>
-        <label><input type="radio" name="pres" value="FLAVIO BOLSONARO"> FLAVIO BOLSONARO</label>
-        <label><input type="radio" name="pres" value="HERTZ DIAS"> HERTZ DIAS</label>
-        <label><input type="radio" name="pres" value="LEONARDO AVALANCHE"> LEONARDO AVALANCHE</label>
-        <label><input type="radio" name="pres" value="LULA"> LULA</label>
-        <label><input type="radio" name="pres" value="PABLO MARÇAL"> PABLO MARÇAL</label>
-        <label><input type="radio" name="pres" value="RENAN SANTOS"> RENAN SANTOS</label>
-        <label><input type="radio" name="pres" value="RONALDO CAIADO"> RONALDO CAIADO</label>
-        <label><input type="radio" name="pres" value="RUI COSTA PIMENTA"> RUI COSTA PIMENTA</label>
-        <label><input type="radio" name="pres" value="SAMARA"> SAMARA</label>
-        <label><input type="radio" name="pres" value="VETERINÁRIO WILSON GRASSI"> VETERINÁRIO WILSON GRASSI</label>
-        <label><input type="radio" name="pres" value="ZEMA"> ZEMA</label>
-      </div>
-
-      <label>Avaliação Governo Estadual:</label>
-      <div class="radio-group">
-        <label><input type="radio" name="aval_gov" value="Pessimo" required> Péssimo</label>
-        <label><input type="radio" name="aval_gov" value="Ruim"> Ruim</label>
-        <label><input type="radio" name="aval_gov" value="Bom"> Bom</label>
-        <label><input type="radio" name="aval_gov" value="Otimo"> Ótimo</label>
-        <label><input type="radio" name="aval_gov" value="NaoQuisOptar"> Não Quis Optar</label>
-      </div>
-
-      <label>Observação:</label>
-      <textarea id="observacao" rows="3"></textarea>
-
-      <label>Demanda Saúde?</label>
-      <div class="radio-group">
-        <label><input type="radio" name="demanda_saude" value="SIM" onclick="toggleSaude(true)" required> SIM</label>
-        <label><input type="radio" name="demanda_saude" value="NAO" onclick="toggleSaude(false)"> NÃO</label>
-      </div>
-
-      <!-- SEÇÃO SAÚDE CONDICIONAL -->
-      <div id="secao-saude" class="hidden" style="border-left: 3px solid #007bff; padding-left: 10px; margin-top: 15px;">
-        <h3>Dados de Demanda de Saúde</h3>
+    <div class="form-container">
+      <form id="form-pesquisa">
+        <input type="hidden" id="lat">
+        <input type="hidden" id="long">
         
-        <label>Nome do Paciente:</label>
-        <input type="text" id="saude_nome">
-
-        <label>CPF:</label>
-        <input type="text" id="saude_cpf">
-
-        <label>Endereço:</label>
-        <input type="text" id="saude_endereco">
-
-        <label>Telefone:</label>
-        <input type="tel" id="saude_telefone">
-
-        <label>Data de Nascimento:</label>
-        <input type="date" id="saude_data_nasc">
-
-        <label>Cartão do SUS:</label>
-        <input type="text" id="saude_cartao_sus">
-
-        <label>Tipo de Procedimento:</label>
-        <textarea id="saude_procedimento" rows="2"></textarea>
-
-        <label>Tem requisição?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="saude_requisicao" value="SIM"> Sim</label>
-          <label><input type="radio" name="saude_requisicao" value="NAO"> Não</label>
+        <div id="gps-info" class="gps-status">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+          Aguardando localização GPS...
         </div>
 
-        <label>Disponibilidade para atendimento em João Pessoa ou outras cidades:</label>
-        <div class="radio-group">
-          <label><input type="radio" name="saude_disponibilidade" value="SIM"> Sim</label>
-          <label><input type="radio" name="saude_disponibilidade" value="NAO"> Não</label>
-        </div>
-      </div>
+        <label class="form-label">Nome completo</label>
+        <input type="text" id="nome_completo" required placeholder="Digite o nome do entrevistado">
 
-      <button type="submit">Enviar Questionário</button>
-    </form>
+        <label class="form-label">Endereço com número da casa</label>
+        <input type="text" id="endereco_numero" required placeholder="Aguardando GPS...">
+
+        <label class="form-label">Bairro</label>
+        <input type="text" id="bairro" required placeholder="Aguardando GPS...">
+
+        <label class="form-label">Telefone</label>
+        <input type="tel" id="telefone" required placeholder="(83) 90000-0000">
+
+        <label class="form-label">Número de pessoas da casa</label>
+        <input type="number" id="num_pessoas" required placeholder="Ex: 3">
+
+        <label class="form-label">Intenção de Voto - Governador (Escolha 1)</label>
+        <div class="radio-group">
+          <label class="option-card"><input type="radio" name="gov" value="LUCAS RIBEIRO" required> LUCAS RIBEIRO</label>
+          <label class="option-card"><input type="radio" name="gov" value="CAMILO DUARTE"> CAMILO DUARTE</label>
+          <label class="option-card"><input type="radio" name="gov" value="CÍCERO LUCENA"> CÍCERO LUCENA</label>
+          <label class="option-card"><input type="radio" name="gov" value="EFRAIM FILHO"> EFRAIM FILHO</label>
+          <label class="option-card"><input type="radio" name="gov" value="PEDRO COUTINHO"> PEDRO COUTINHO</label>
+          <label class="option-card"><input type="radio" name="gov" value="YURI EZEQUIEL"> YURI EZEQUIEL</label>
+        </div>
+
+        <label class="form-label">Intenção de Voto - Senador (Escolha até 2)</label>
+        <div class="checkbox-group" id="senador-group">
+          <label class="option-card"><input type="checkbox" name="senador" value="ADRIANO TRAJANO"> ADRIANO TRAJANO</label>
+          <label class="option-card"><input type="checkbox" name="senador" value="ANDRÉ GADELHA"> ANDRÉ GADELHA</label>
+          <label class="option-card"><input type="checkbox" name="senador" value="DR. MARCELO QUEIROGA"> DR. MARCELO QUEIROGA</label>
+          <label class="option-card"><input type="checkbox" name="senador" value="JOAO AZEVÊDO"> JOAO AZEVÊDO</label>
+          <label class="option-card"><input type="checkbox" name="senador" value="JOÃO BATISTA"> JOÃO BATISTA</label>
+          <label class="option-card"><input type="checkbox" name="senador" value="MAJOR FÁBIO"> MAJOR FÁBIO</label>
+          <label class="option-card"><input type="checkbox" name="senador" value="NABOR"> NABOR</label>
+          <label class="option-card"><input type="checkbox" name="senador" value="RINALDO JÚNIOR"> RINALDO JÚNIOR</label>
+          <label class="option-card"><input type="checkbox" name="senador" value="ROSILENE SANTANA"> ROSILENE SANTANA</label>
+          <label class="option-card"><input type="checkbox" name="senador" value="VENEZIANO"> VENEZIANO</label>
+        </div>
+
+        <label class="form-label">Deputado Estadual</label>
+        <input type="text" id="deputado_estadual" placeholder="Nome do candidato">
+
+        <label class="form-label">Deputado Federal</label>
+        <input type="text" id="deputado_federal" placeholder="Nome do candidato">
+
+        <label class="form-label">Intenção de Voto - Presidente (Escolha 1)</label>
+        <div class="radio-group">
+          <label class="option-card"><input type="radio" name="pres" value="CLARIANA BARAO" required> CLARIANA BARAO</label>
+          <label class="option-card"><input type="radio" name="pres" value="EDMILSON COSTA"> EDMILSON COSTA</label>
+          <label class="option-card"><input type="radio" name="pres" value="ESCRITOR AUGUSTO CURY"> ESCRITOR AUGUSTO CURY</label>
+          <label class="option-card"><input type="radio" name="pres" value="FLAVIO BOLSONARO"> FLAVIO BOLSONARO</label>
+          <label class="option-card"><input type="radio" name="pres" value="HERTZ DIAS"> HERTZ DIAS</label>
+          <label class="option-card"><input type="radio" name="pres" value="LEONARDO AVALANCHE"> LEONARDO AVALANCHE</label>
+          <label class="option-card"><input type="radio" name="pres" value="LULA"> LULA</label>
+          <label class="option-card"><input type="radio" name="pres" value="PABLO MARÇAL"> PABLO MARÇAL</label>
+          <label class="option-card"><input type="radio" name="pres" value="RENAN SANTOS"> RENAN SANTOS</label>
+          <label class="option-card"><input type="radio" name="pres" value="RONALDO CAIADO"> RONALDO CAIADO</label>
+          <label class="option-card"><input type="radio" name="pres" value="RUI COSTA PIMENTA"> RUI COSTA PIMENTA</label>
+          <label class="option-card"><input type="radio" name="pres" value="SAMARA"> SAMARA</label>
+          <label class="option-card"><input type="radio" name="pres" value="VETERINÁRIO WILSON GRASSI"> VETERINÁRIO WILSON GRASSI</label>
+          <label class="option-card"><input type="radio" name="pres" value="ZEMA"> ZEMA</label>
+        </div>
+
+        <label class="form-label">Avaliação Governo Estadual</label>
+        <div class="radio-group">
+          <label class="option-card"><input type="radio" name="aval_gov" value="Pessimo" required> Péssimo</label>
+          <label class="option-card"><input type="radio" name="aval_gov" value="Ruim"> Ruim</label>
+          <label class="option-card"><input type="radio" name="aval_gov" value="Bom"> Bom</label>
+          <label class="option-card"><input type="radio" name="aval_gov" value="Otimo"> Ótimo</label>
+          <label class="option-card"><input type="radio" name="aval_gov" value="NaoQuisOptar"> Não Quis Optar</label>
+        </div>
+
+        <label class="form-label">Observação</label>
+        <textarea id="observacao" rows="3" placeholder="Anotações adicionais..."></textarea>
+
+        <label class="form-label">Demanda Saúde?</label>
+        <div class="radio-group">
+          <label class="option-card"><input type="radio" name="demanda_saude" value="SIM" onclick="toggleSaude(true)" required> SIM</label>
+          <label class="option-card"><input type="radio" name="demanda_saude" value="NAO" onclick="toggleSaude(false)"> NÃO</label>
+        </div>
+
+        <!-- SEÇÃO SAÚDE -->
+        <div id="secao-saude" class="hidden" style="border-left: 3px solid var(--primary-color); padding-left: 15px; margin-top: 15px;">
+          <h3 style="font-size: 16px; margin-top: 10px;">Dados de Demanda de Saúde</h3>
+          
+          <label class="form-label">Nome do Paciente</label>
+          <input type="text" id="saude_nome">
+
+          <label class="form-label">CPF</label>
+          <input type="text" id="saude_cpf">
+
+          <label class="form-label">Endereço</label>
+          <input type="text" id="saude_endereco">
+
+          <label class="form-label">Telefone</label>
+          <input type="tel" id="saude_telefone">
+
+          <label class="form-label">Data de Nascimento</label>
+          <input type="date" id="saude_data_nasc">
+
+          <label class="form-label">Cartão do SUS</label>
+          <input type="text" id="saude_cartao_sus">
+
+          <label class="form-label">Tipo de Procedimento</label>
+          <textarea id="saude_procedimento" rows="2"></textarea>
+
+          <label class="form-label">Tem requisição?</label>
+          <div class="radio-group">
+            <label class="option-card"><input type="radio" name="saude_requisicao" value="SIM"> Sim</label>
+            <label class="option-card"><input type="radio" name="saude_requisicao" value="NAO"> Não</label>
+          </div>
+
+          <label class="form-label">Disponibilidade para atendimento em João Pessoa ou outras cidades</label>
+          <div class="radio-group">
+            <label class="option-card"><input type="radio" name="saude_disponibilidade" value="SIM"> Sim</label>
+            <label class="option-card"><input type="radio" name="saude_disponibilidade" value="NAO"> Não</label>
+          </div>
+        </div>
+
+        <button type="submit">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
+          Enviar Questionário
+        </button>
+      </form>
+    </div>
   </div>
 
   <script>
@@ -449,7 +561,10 @@
           return;
         }
 
-        document.getElementById('gps-info').innerText = "Obtendo localização e endereço...";
+        document.getElementById('gps-info').innerHTML = `
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg> Obtendo localização e endereço...`;
 
         navigator.geolocation.getCurrentPosition(
           async (pos) => {
@@ -457,7 +572,10 @@
             const lng = pos.coords.longitude;
             document.getElementById('lat').value = lat;
             document.getElementById('long').value = lng;
-            document.getElementById('gps-info').innerText = `GPS Capturado: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+            document.getElementById('gps-info').innerHTML = `
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg> GPS Capturado: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
             
             await preencherEnderecoReverso(lat, lng);
             resolve(true);
@@ -490,7 +608,7 @@
       document.getElementById('login-screen').classList.add('hidden');
 
       if (role === 'coordenador') {
-        document.getElementById('coord-user-info').innerText = `Logado como Coordenador: ${usuarioAtual.email}`;
+        document.getElementById('coord-user-info').innerText = `Logado como: ${usuarioAtual.email}`;
         document.getElementById('coordinator-screen').classList.remove('hidden');
         carregarPainelCoordenador();
       } else {
@@ -649,7 +767,7 @@
           <td>${r.governador || 'N/A'}</td>
           <td><b>${r.demanda_saude || 'NÃO'}</b></td>
           <td>
-            ${(r.lat && r.long) ? `<a href="${mapaUrl}" target="_blank" style="color: #007bff; font-weight: bold;">Ver Mapa</a>` : 'Sem GPS'}
+            ${(r.lat && r.long) ? `<a href="${mapaUrl}" target="_blank" style="color: var(--primary-color); font-weight: bold;">Ver Mapa</a>` : 'Sem GPS'}
           </td>
         `;
         tbody.appendChild(tr);
@@ -663,7 +781,7 @@
         return;
       }
 
-      let csv = '\uFEFF'; // Adiciona BOM para UTF-8 no Excel
+      let csv = '\uFEFF';
       const colunas = [
         "ID", "Data/Hora", "Pesquisador Email", "Nome Completo", "Endereco", "Bairro", "Telefone",
         "Num Pessoas", "Governador", "Senadores", "Deputado Estadual", "Deputado Federal", "Presidente",
