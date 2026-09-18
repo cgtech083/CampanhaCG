@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Pesquisa Eleitoral & Campo</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
@@ -16,66 +16,57 @@
       --bg-body: #f1f5f9;
     }
 
+    * { box-sizing: border-box; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg-body);
       color: var(--text-main);
       margin: 0;
-      padding: 20px 10px;
+      padding: 8px;
     }
 
     .card {
       background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
       overflow: hidden;
-      margin: 20px auto;
+      margin: 10px auto;
+      width: 100%;
     }
 
     /* TELA DE LOGIN */
-    #login-screen {
-      max-width: 420px;
-    }
+    #login-screen { max-width: 400px; }
     .login-header {
       background: var(--dark-header);
       color: #ffffff;
-      padding: 35px 20px 25px;
+      padding: 25px 15px 20px;
       text-align: center;
     }
     .login-avatar-icon {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       background: var(--primary-color);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 15px;
+      margin: 0 auto 10px;
       color: #ffffff;
     }
-    .login-header h2 {
-      margin: 0 0 8px;
-      font-size: 22px;
-      font-weight: 700;
-    }
-    .login-header p {
-      margin: 0;
-      font-size: 13px;
-      color: #94a3b8;
-    }
-    .login-body {
-      padding: 25px 30px 35px;
-    }
+    .login-header h2 { margin: 0 0 5px; font-size: 20px; font-weight: 700; }
+    .login-header p { margin: 0; font-size: 12px; color: #94a3b8; }
+    .login-body { padding: 15px 20px 25px; }
 
-    /* ESTILOS DE FORMULÁRIO PADRONIZADOS */
+    /* FORMULÁRIO COMPACTO */
     label.form-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       color: var(--text-label);
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      margin-top: 18px;
-      margin-bottom: 6px;
+      margin-top: 10px;
+      margin-bottom: 3px;
       display: block;
     }
 
@@ -88,11 +79,10 @@
     textarea, 
     select {
       width: 100%;
-      padding: 10px 14px;
-      box-sizing: border-box;
+      padding: 6px 10px; /* Reduzido para ser mais compacto */
       border: 1px solid var(--border-color);
-      border-radius: 10px;
-      font-size: 14px;
+      border-radius: 8px;
+      font-size: 13px;
       color: var(--text-main);
       background: #ffffff;
       transition: border-color 0.2s, box-shadow 0.2s;
@@ -101,7 +91,7 @@
     input:focus, textarea:focus, select:focus {
       outline: none;
       border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
     }
 
     .input-with-icon {
@@ -111,27 +101,24 @@
     }
     .input-with-icon svg {
       position: absolute;
-      left: 12px;
-      width: 18px;
-      height: 18px;
+      left: 10px;
+      width: 16px;
+      height: 16px;
       fill: #94a3b8;
     }
-    .input-with-icon input {
-      padding-left: 40px;
-    }
+    .input-with-icon input { padding-left: 34px; }
 
-    /* GRUPOS DE RADIO E CHECKBOX */
+    /* OPÇÕES RADIO E CHECKBOX COMPACTAS */
     .option-card {
       display: flex;
       align-items: center;
-      padding: 10px 14px;
+      padding: 6px 10px;
       border: 1px solid var(--border-color);
-      border-radius: 10px;
-      margin-bottom: 8px;
+      border-radius: 8px;
+      margin-bottom: 5px;
       cursor: pointer;
       background: #f8fafc;
-      transition: background 0.2s, border-color 0.2s;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
     }
     .option-card:hover {
@@ -139,30 +126,29 @@
       border-color: var(--primary-color);
     }
     .option-card input {
-      margin-right: 12px;
+      margin-right: 8px;
       accent-color: var(--primary-color);
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
     }
 
-    /* BOTÕES */
+    /* BOTÕES COMPACTOS */
     button, .btn-primary {
       background: var(--primary-color);
       color: #ffffff;
       border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-size: 15px;
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-      transition: background 0.2s;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
       width: 100%;
-      margin-top: 20px;
+      margin-top: 14px;
     }
     button:hover { background: var(--primary-hover); }
     
@@ -170,89 +156,91 @@
       background: #64748b;
       box-shadow: none;
       width: auto;
-      padding: 8px 16px;
-      font-size: 13px;
+      padding: 6px 12px;
+      font-size: 12px;
+      margin-top: 0;
     }
     .btn-secondary:hover { background: #475569; }
 
     .btn-success {
       background: #10b981;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
       width: auto;
-      padding: 8px 16px;
-      font-size: 13px;
+      padding: 6px 12px;
+      font-size: 12px;
+      margin-top: 0;
     }
     .btn-success:hover { background: #059669; }
 
-    /* LAYOUT TELA DE FORMULÁRIO E COORDENADOR */
-    #app-screen, #coordinator-screen {
-      max-width: 800px;
-    }
+    /* RESPONSIVIDADE E TELA PRINCIPAL */
+    #app-screen, #coordinator-screen { max-width: 900px; }
+
     .header-banner {
       background: var(--dark-header);
       color: #ffffff;
-      padding: 24px 30px;
+      padding: 15px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 10px;
     }
-    .header-banner h2 {
-      margin: 0;
-      font-size: 20px;
-      font-weight: 700;
-    }
-    .header-banner .user-tag {
-      font-size: 13px;
-      color: #94a3b8;
-    }
-    .form-container {
-      padding: 25px 30px 35px;
-    }
+    .header-banner h2 { margin: 0; font-size: 17px; font-weight: 700; }
+    .header-banner .user-tag { font-size: 12px; color: #94a3b8; }
+    .form-container { padding: 15px 18px 25px; }
 
     .gps-status {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       background: #e0f2fe;
       color: #0369a1;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px;
       font-weight: 600;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    /* REGRAS DE EXIBIÇÃO */
     .hidden { display: none !important; }
 
     /* DASHBOARD COORDENADOR */
-    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin: 20px 0; }
-    .kpi-card { background: #f8fafc; padding: 16px; border-radius: 12px; text-align: center; border: 1px solid var(--border-color); }
-    .kpi-card h3 { margin: 0; font-size: 26px; color: var(--primary-color); }
-    .kpi-card p { margin: 4px 0 0; font-size: 12px; color: #64748b; font-weight: 600; }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .kpi-card {
+      background: #f8fafc;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+    .kpi-card h3 { margin: 0; font-size: 22px; color: var(--primary-color); }
+    .kpi-card p { margin: 2px 0 0; font-size: 11px; color: #64748b; font-weight: 600; }
     
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-    th, td { border-bottom: 1px solid #e2e8f0; padding: 10px; text-align: left; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12px; }
+    th, td { border-bottom: 1px solid #e2e8f0; padding: 7px; text-align: left; }
     th { background: #f8fafc; color: var(--text-label); font-weight: 700; }
-    .filter-group { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-    .filter-group select, .filter-group input { flex: 1; min-width: 150px; }
-    .table-responsive { overflow-x: auto; }
+    .filter-group { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .filter-group select, .filter-group input { flex: 1; min-width: 120px; }
+    .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN -->
+  <!-- TELA DE LOGIN -->
   <div id="login-screen" class="card">
     <div class="login-header">
       <div class="login-avatar-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
         </svg>
       </div>
       <h2>Acesso ao Sistema</h2>
-      <p>Identifique-se para acessar o formulário ou painel de gestão</p>
+      <p>Identifique-se para acessar o painel de gestão ou formulário</p>
     </div>
     <div class="login-body">
       <form id="form-login">
@@ -273,7 +261,7 @@
         </div>
 
         <button type="submit">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/>
           </svg>
           Entrar no Sistema
@@ -286,10 +274,10 @@
   <div id="coordinator-screen" class="card hidden">
     <div class="header-banner">
       <div>
-        <h2>Painel de Controle da Coordenação</h2>
+        <h2>Painel do Coordenador</h2>
         <div id="coord-user-info" class="user-tag"></div>
       </div>
-      <div style="display: flex; gap: 8px;">
+      <div style="display: flex; gap: 6px;">
         <button type="button" onclick="exportarExcel()" class="btn-success">Exportar (CSV)</button>
         <button type="button" onclick="logout()" class="btn-secondary">Sair</button>
       </div>
@@ -300,23 +288,23 @@
         <div class="kpi-card"><h3 id="total-hoje">0</h3><p>Pesquisas Hoje</p></div>
         <div class="kpi-card"><h3 id="total-semana">0</h3><p>Últimos 7 Dias</p></div>
         <div class="kpi-card"><h3 id="total-mes">0</h3><p>Mês Atual</p></div>
-        <div class="kpi-card"><h3 id="total-saude">0</h3><p>Demandas de Saúde</p></div>
+        <div class="kpi-card"><h3 id="total-saude">0</h3><p>Demandas Saúde</p></div>
       </div>
 
-      <label class="form-label">Rendimento da Equipe de Campo</label>
+      <label class="form-label">Rendimento da Equipe</label>
       <div class="table-responsive">
         <table>
           <thead>
             <tr>
-              <th>Pesquisador (E-mail)</th>
+              <th>Pesquisador</th>
               <th>Hoje</th>
-              <th>Últimos 7 Dias</th>
+              <th>7 Dias</th>
               <th>Mês</th>
-              <th>Total Geral</th>
+              <th>Total</th>
             </tr>
           </thead>
           <tbody id="table-pesquisadores">
-            <tr><td colspan="5">Carregando métricas da equipe...</td></tr>
+            <tr><td colspan="5">Carregando métricas...</td></tr>
           </tbody>
         </table>
       </div>
@@ -348,7 +336,7 @@
               <th>Telefone</th>
               <th>Gov. Preferido</th>
               <th>Saúde?</th>
-              <th>Localização</th>
+              <th>Mapa</th>
             </tr>
           </thead>
           <tbody id="table-respostas">
@@ -375,14 +363,14 @@
         <input type="hidden" id="long">
         
         <div id="gps-info" class="gps-status">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
           </svg>
           Aguardando localização GPS...
         </div>
 
         <label class="form-label">Nome completo</label>
-        <input type="text" id="nome_completo" required placeholder="Digite o nome do entrevistado">
+        <input type="text" id="nome_completo" required placeholder="Nome do entrevistado">
 
         <label class="form-label">Endereço com número da casa</label>
         <input type="text" id="endereco_numero" required placeholder="Aguardando GPS...">
@@ -454,7 +442,7 @@
         </div>
 
         <label class="form-label">Observação</label>
-        <textarea id="observacao" rows="3" placeholder="Anotações adicionais..."></textarea>
+        <textarea id="observacao" rows="2" placeholder="Anotações adicionais..."></textarea>
 
         <label class="form-label">Demanda Saúde?</label>
         <div class="radio-group">
@@ -462,9 +450,9 @@
           <label class="option-card"><input type="radio" name="demanda_saude" value="NAO" onclick="toggleSaude(false)"> NÃO</label>
         </div>
 
-        <!-- SEÇÃO SAÚDE -->
-        <div id="secao-saude" class="hidden" style="border-left: 3px solid var(--primary-color); padding-left: 15px; margin-top: 15px;">
-          <h3 style="font-size: 16px; margin-top: 10px;">Dados de Demanda de Saúde</h3>
+        <!-- SEÇÃO SAÚDE CONDICIONAL -->
+        <div id="secao-saude" class="hidden" style="border-left: 3px solid var(--primary-color); padding-left: 10px; margin-top: 10px;">
+          <h3 style="font-size: 14px; margin-top: 8px;">Dados de Demanda de Saúde</h3>
           
           <label class="form-label">Nome do Paciente</label>
           <input type="text" id="saude_nome">
@@ -501,7 +489,7 @@
         </div>
 
         <button type="submit">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
           </svg>
           Enviar Questionário
@@ -517,6 +505,7 @@
 
     let usuarioAtual = null;
     let respostasGlobais = [];
+    let canalRealtime = null;
 
     // Limite de 2 Senadores
     const senadores = document.querySelectorAll('input[name="senador"]');
@@ -532,6 +521,35 @@
 
     function toggleSaude(show) {
       document.getElementById('secao-saude').classList.toggle('hidden', !show);
+    }
+
+    // VERIFICAÇÃO AUTOMÁTICA DE SESSÃO SALVA AO CARREGAR/F5
+    window.addEventListener('DOMContentLoaded', async () => {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (session) {
+        direcionarUsuario(session.user);
+      }
+    });
+
+    function direcionarUsuario(user) {
+      usuarioAtual = user;
+      const role = user.user_metadata?.role || 'pesquisador';
+
+      document.getElementById('login-screen').classList.add('hidden');
+
+      if (role === 'coordenador') {
+        document.getElementById('coord-user-info').innerText = `Logado como: ${usuarioAtual.email}`;
+        document.getElementById('coordinator-screen').classList.remove('hidden');
+        carregarPainelCoordenador();
+        inscreverRealtime(); // Ativa escuta em tempo real
+      } else {
+        capturarGPSObrigatorio().then(() => {
+          document.getElementById('pesq-user-info').innerText = usuarioAtual.email;
+          document.getElementById('app-screen').classList.remove('hidden');
+        }).catch(() => {
+          document.getElementById('login-screen').classList.remove('hidden');
+        });
+      }
     }
 
     // Geocoding reverso via Nominatim
@@ -562,9 +580,9 @@
         }
 
         document.getElementById('gps-info').innerHTML = `
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-          </svg> Obtendo localização e endereço...`;
+          </svg> Obtendo localização...`;
 
         navigator.geolocation.getCurrentPosition(
           async (pos) => {
@@ -573,7 +591,7 @@
             document.getElementById('lat').value = lat;
             document.getElementById('long').value = lng;
             document.getElementById('gps-info').innerHTML = `
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
               </svg> GPS Capturado: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
             
@@ -602,32 +620,30 @@
         return;
       }
 
-      usuarioAtual = data.user;
-      const role = data.user.user_metadata?.role || 'pesquisador';
-
-      document.getElementById('login-screen').classList.add('hidden');
-
-      if (role === 'coordenador') {
-        document.getElementById('coord-user-info').innerText = `Logado como: ${usuarioAtual.email}`;
-        document.getElementById('coordinator-screen').classList.remove('hidden');
-        carregarPainelCoordenador();
-      } else {
-        try {
-          await capturarGPSObrigatorio();
-          document.getElementById('pesq-user-info').innerText = usuarioAtual.email;
-          document.getElementById('app-screen').classList.remove('hidden');
-        } catch (err) {
-          document.getElementById('login-screen').classList.remove('hidden');
-        }
-      }
+      direcionarUsuario(data.user);
     });
 
     async function logout() {
+      if (canalRealtime) _supabase.removeChannel(canalRealtime);
       await _supabase.auth.signOut();
       usuarioAtual = null;
       document.getElementById('app-screen').classList.add('hidden');
       document.getElementById('coordinator-screen').classList.add('hidden');
       document.getElementById('login-screen').classList.remove('hidden');
+    }
+
+    // ATUALIZAÇÃO EM TEMPO REAL (REALTIME SUPABASE)
+    function inscreverRealtime() {
+      if (canalRealtime) return;
+      canalRealtime = _supabase
+        .channel('mudancas-respostas')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'respostas' }, payload => {
+          respostasGlobais.unshift(payload.new);
+          processarMetricasEEquipe(respostasGlobais);
+          atualizarFiltroPesquisadores(respostasGlobais);
+          renderizarRespostasCoordenador();
+        })
+        .subscribe();
     }
 
     // LÓGICA DO PAINEL DO COORDENADOR
@@ -709,6 +725,7 @@
 
     function atualizarFiltroPesquisadores(respostas) {
       const select = document.getElementById('filter-pesquisador');
+      const valorAtual = select.value;
       select.innerHTML = '<option value="todos">Todos os Pesquisadores</option>';
       
       const emails = [...new Set(respostas.map(r => r.pesquisador_email).filter(Boolean))];
@@ -718,6 +735,7 @@
         opt.innerText = email;
         select.appendChild(opt);
       });
+      select.value = valorAtual;
     }
 
     function renderizarRespostasCoordenador() {
