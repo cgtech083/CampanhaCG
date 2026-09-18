@@ -971,6 +971,34 @@
         }
       }
     });
+
+    <script>
+  // 1. Bloqueia o clique com o botão direito do mouse
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+  });
+
+  // 2. Bloqueia atalhos de teclado comuns de inspeção
+  document.addEventListener('keydown', function (e) {
+    // Bloqueia a tecla F12
+    if (e.key === 'F12' || e.keyCode === 123) {
+      e.preventDefault();
+      return false;
+    }
+
+    // Bloqueia Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (Developer Tools / Console)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+      e.preventDefault();
+      return false;
+    }
+
+    // Bloqueia Ctrl+U (Ver Código-Fonte)
+    if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+      e.preventDefault();
+      return false;
+    }
+  });
+</script>
   </script>
 </body>
 </html>
