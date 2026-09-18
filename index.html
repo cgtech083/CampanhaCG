@@ -36,7 +36,7 @@
     }
 
     /* TELA DE LOGIN */
-    #login-screen { max-width: 400px; }
+    #login-screen { max-width: 380px; }
     .login-header {
       background: var(--dark-header);
       color: #ffffff;
@@ -79,13 +79,20 @@
     textarea, 
     select {
       width: 100%;
-      padding: 6px 10px; /* Reduzido para ser mais compacto */
+      max-width: 350px;
+      padding: 6px 10px;
       border: 1px solid var(--border-color);
       border-radius: 8px;
       font-size: 13px;
       color: var(--text-main);
       background: #ffffff;
       transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:disabled {
+      background-color: #f1f5f9;
+      cursor: not-allowed;
+      opacity: 0.7;
     }
 
     input:focus, textarea:focus, select:focus {
@@ -98,6 +105,7 @@
       position: relative;
       display: flex;
       align-items: center;
+      max-width: 350px;
     }
     .input-with-icon svg {
       position: absolute;
@@ -106,7 +114,7 @@
       height: 16px;
       fill: #94a3b8;
     }
-    .input-with-icon input { padding-left: 34px; }
+    .input-with-icon input { padding-left: 34px; width: 100%; }
 
     /* OPÇÕES RADIO E CHECKBOX COMPACTAS */
     .option-card {
@@ -120,6 +128,7 @@
       background: #f8fafc;
       font-size: 13px;
       font-weight: 500;
+      max-width: 350px;
     }
     .option-card:hover {
       background: #eff6ff;
@@ -148,6 +157,7 @@
       gap: 6px;
       box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
       width: 100%;
+      max-width: 350px;
       margin-top: 14px;
     }
     button:hover { background: var(--primary-hover); }
@@ -406,14 +416,27 @@
           <label class="option-card"><input type="checkbox" name="senador" value="RINALDO JÚNIOR"> RINALDO JÚNIOR</label>
           <label class="option-card"><input type="checkbox" name="senador" value="ROSILENE SANTANA"> ROSILENE SANTANA</label>
           <label class="option-card"><input type="checkbox" name="senador" value="VENEZIANO"> VENEZIANO</label>
-          <label class="option-card"><input type="checkbox" name="senador" value="NaoQuisOptar"> Não Quis Optar</label>
         </div>
 
+        <!-- DEPUTADO ESTADUAL COM RÁDIO "NÃO QUIS OPINAR" -->
         <label class="form-label">Deputado Estadual</label>
         <input type="text" id="deputado_estadual" placeholder="Nome do candidato">
+        <div style="margin-top: 4px;">
+          <label class="option-card">
+            <input type="radio" name="dep_est_opt" id="dep_est_nao_opinar" value="Não Quis Opinar" onclick="toggleInputDeputado('deputado_estadual', true)">
+            Não Quis Opinar
+          </label>
+        </div>
 
+        <!-- DEPUTADO FEDERAL COM RÁDIO "NÃO QUIS OPINAR" -->
         <label class="form-label">Deputado Federal</label>
         <input type="text" id="deputado_federal" placeholder="Nome do candidato">
+        <div style="margin-top: 4px;">
+          <label class="option-card">
+            <input type="radio" name="dep_fed_opt" id="dep_fed_nao_opinar" value="Não Quis Opinar" onclick="toggleInputDeputado('deputado_federal', true)">
+            Não Quis Opinar
+          </label>
+        </div>
 
         <label class="form-label">Intenção de Voto - Presidente (Escolha 1)</label>
         <div class="radio-group">
@@ -431,7 +454,6 @@
           <label class="option-card"><input type="radio" name="pres" value="SAMARA"> SAMARA</label>
           <label class="option-card"><input type="radio" name="pres" value="VETERINÁRIO WILSON GRASSI"> VETERINÁRIO WILSON GRASSI</label>
           <label class="option-card"><input type="radio" name="pres" value="ZEMA"> ZEMA</label>
-          <label class="option-card"><input type="radio" name="pres" value="NaoQuisOptar"> Não Quis Optar</label>
         </div>
 
         <label class="form-label">Avaliação Governo Estadual</label>
@@ -525,6 +547,32 @@
       document.getElementById('secao-saude').classList.toggle('hidden', !show);
     }
 
+    // Alterna a habilitação dos campos de Deputado ao clicar no botão Rádio
+    function toggleInputDeputado(inputId, desabilitar) {
+      const input = document.getElementById(inputId);
+      if (desabilitar) {
+        input.value = '';
+        input.disabled = true;
+      } else {
+        input.disabled = false;
+      }
+    }
+
+    // Se o usuário começar a digitar no campo, desmarca o botão "Não Quis Opinar"
+    document.getElementById('deputado_estadual').addEventListener('input', (e) => {
+      if (e.target.value.trim() !== '') {
+        const radio = document.getElementById('dep_est_nao_opinar');
+        if (radio) radio.checked = false;
+      }
+    });
+
+    document.getElementById('deputado_federal').addEventListener('input', (e) => {
+      if (e.target.value.trim() !== '') {
+        const radio = document.getElementById('dep_fed_nao_opinar');
+        if (radio) radio.checked = false;
+      }
+    });
+
     // VERIFICAÇÃO AUTOMÁTICA DE SESSÃO SALVA AO CARREGAR/F5
     window.addEventListener('DOMContentLoaded', async () => {
       const { data: { session } } = await _supabase.auth.getSession();
@@ -543,7 +591,7 @@
         document.getElementById('coord-user-info').innerText = `Logado como: ${usuarioAtual.email}`;
         document.getElementById('coordinator-screen').classList.remove('hidden');
         carregarPainelCoordenador();
-        inscreverRealtime(); // Ativa escuta em tempo real
+        inscreverRealtime();
       } else {
         capturarGPSObrigatorio().then(() => {
           document.getElementById('pesq-user-info').innerText = usuarioAtual.email;
@@ -861,6 +909,18 @@
       const senadoresSel = Array.from(document.querySelectorAll('input[name="senador"]:checked')).map(el => el.value);
       const getVal = (id) => document.getElementById(id).value.trim() || null;
 
+      // Trata a seleção de Deputado Estadual
+      let depEstadualVal = getVal('deputado_estadual');
+      if (document.getElementById('dep_est_nao_opinar').checked) {
+        depEstadualVal = "Não Quis Opinar";
+      }
+
+      // Trata a seleção de Deputado Federal
+      let depFederalVal = getVal('deputado_federal');
+      if (document.getElementById('dep_fed_nao_opinar').checked) {
+        depFederalVal = "Não Quis Opinar";
+      }
+
       const payload = {
         pesquisador_id: usuarioAtual ? usuarioAtual.id : null,
         pesquisador_email: usuarioAtual ? usuarioAtual.email : null,
@@ -873,8 +933,8 @@
         num_pessoas: getVal('num_pessoas') ? parseInt(getVal('num_pessoas')) : null,
         governador: document.querySelector('input[name="gov"]:checked')?.value || null,
         senadores: senadoresSel,
-        deputado_estadual: getVal('deputado_estadual'),
-        deputado_federal: getVal('deputado_federal'),
+        deputado_estadual: depEstadualVal,
+        deputado_federal: depFederalVal,
         presidente: document.querySelector('input[name="pres"]:checked')?.value || null,
         avaliacao_gov: document.querySelector('input[name="aval_gov"]:checked')?.value || null,
         observacao: getVal('observacao'),
@@ -897,6 +957,10 @@
       } else {
         alert('Questionário gravado com sucesso!');
         document.getElementById('form-pesquisa').reset();
+        
+        // Reabilita os campos após reset do formulário
+        toggleInputDeputado('deputado_estadual', false);
+        toggleInputDeputado('deputado_federal', false);
         toggleSaude(false);
         
         try {
