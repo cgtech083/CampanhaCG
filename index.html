@@ -218,50 +218,51 @@
       }
     });
 
-    // Envio do Formulário
-    document.getElementById('form-pesquisa').addEventListener('submit', async (e) => {
-      e.preventDefault();
+   // Envio do Formulário
+document.getElementById('form-pesquisa').addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-      const senadoresSel = Array.from(document.querySelectorAll('input[name="senador"]:checked')).map(el => el.value);
+  const senadoresSel = Array.from(document.querySelectorAll('input[name="senador"]:checked')).map(el => el.value);
 
-      const payload = {
-        lat: document.getElementById('lat').value,
-        long: document.getElementById('long').value,
-        nome_completo: document.getElementById('nome_completo').value,
-        endereco_numero: document.getElementById('endereco_numero').value,
-        bairro: document.getElementById('bairro').value,
-        telefone: document.getElementById('telefone').value,
-        num_pessoas: document.getElementById('num_pessoas').value,
-        governador: document.querySelector('input[name="gov"]:checked')?.value,
-        senadores: senadoresSel,
-        deputado_estadual: document.getElementById('deputado_estadual').value,
-        deputado_federal: document.getElementById('deputado_federal').value,
-        presidente: document.querySelector('input[name="pres"]:checked')?.value,
-        avaliacao_gov: document.querySelector('input[name="aval_gov"]:checked')?.value,
-        observacao: document.getElementById('observacao').value,
-        demanda_saude: document.querySelector('input[name="demanda_saude"]:checked')?.value,
-        saude_nome: document.getElementById('saude_nome').value,
-        saude_cpf: document.getElementById('saude_cpf').value,
-        saude_endereco: document.getElementById('saude_endereco').value,
-        saude_telefone: document.getElementById('saude_telefone').value,
-        saude_data_nasc: document.getElementById('saude_data_nasc').value || null,,
-        saude_cartao_sus: document.getElementById('saude_cartao_sus').value,
-        saude_procedimento: document.getElementById('saude_procedimento').value,
-        saude_requisicao: document.querySelector('input[name="saude_requisicao"]:checked')?.value,
-        saude_disponibilidade: document.querySelector('input[name="saude_disponibilidade"]:checked')?.value
-      };
+  const payload = {
+    lat: document.getElementById('lat').value,
+    long: document.getElementById('long').value,
+    nome_completo: document.getElementById('nome_completo').value,
+    endereco_numero: document.getElementById('endereco_numero').value,
+    bairro: document.getElementById('bairro').value,
+    telefone: document.getElementById('telefone').value,
+    num_pessoas: document.getElementById('num_pessoas').value,
+    governador: document.querySelector('input[name="gov"]:checked')?.value,
+    senadores: senadoresSel,
+    deputado_estadual: document.getElementById('deputado_estadual').value,
+    deputado_federal: document.getElementById('deputado_federal').value,
+    presidente: document.querySelector('input[name="pres"]:checked')?.value,
+    avaliacao_gov: document.querySelector('input[name="aval_gov"]:checked')?.value,
+    observacao: document.getElementById('observacao').value,
+    demanda_saude: document.querySelector('input[name="demanda_saude"]:checked')?.value,
+    saude_nome: document.getElementById('saude_nome').value,
+    saude_cpf: document.getElementById('saude_cpf').value,
+    saude_endereco: document.getElementById('saude_endereco').value,
+    saude_telefone: document.getElementById('saude_telefone').value,
+    // CORREÇÃO AQUI: Envia null se a data não for preenchida
+    saude_data_nasc: document.getElementById('saude_data_nasc').value || null,
+    saude_cartao_sus: document.getElementById('saude_cartao_sus').value,
+    saude_procedimento: document.getElementById('saude_procedimento').value,
+    saude_requisicao: document.querySelector('input[name="saude_requisicao"]:checked')?.value,
+    saude_disponibilidade: document.querySelector('input[name="saude_disponibilidade"]:checked')?.value
+  };
 
-      const { error } = await _supabase.from('respostas').insert([payload]);
+  const { error } = await _supabase.from('respostas').insert([payload]);
 
-      if (error) {
-        alert('Erro ao salvar resposta: ' + error.message);
-      } else {
-        alert('Questionário gravado com sucesso!');
-        document.getElementById('form-pesquisa').reset();
-        toggleSaude(false);
-        capturarGPS();
-      }
-    });
+  if (error) {
+    alert('Erro ao salvar resposta: ' + error.message);
+  } else {
+    alert('Questionário gravado com sucesso!');
+    document.getElementById('form-pesquisa').reset();
+    toggleSaude(false);
+    capturarGPS();
+  }
+});
   </script>
 </body>
 </html>
