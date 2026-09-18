@@ -189,20 +189,35 @@
       document.getElementById('secao-saude').classList.toggle('hidden', !show);
     }
 
-    // Captura da Localização GPS
-    function capturarGPS() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
-          document.getElementById('lat').value = pos.coords.latitude;
-          document.getElementById('long').value = pos.coords.longitude;
-          document.getElementById('gps-info').innerText = `GPS Capturado: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
-        }, () => {
-          document.getElementById('gps-info').innerText = "Atenção: Permissão de GPS negada pelo usuário.";
-        });
-      }
+    // Captura Obrigatória da Localização GPS
+    function capturarGPSObrigatorio() {
+      return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+          alert("Seu dispositivo ou navegador não suporta geolocalização.");
+          reject("Sem suporte a GPS");
+          return;
+        }
+
+        document.getElementById('gps-info').innerText = "Solicitando localização GPS...";
+
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            document.getElementById('lat').value = pos.coords.latitude;
+            document.getElementById('long').value = pos.coords.longitude;
+            document.getElementById('gps-info').innerText = `GPS Capturado: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`;
+            resolve(true);
+          },
+          (error) => {
+            alert("É obrigatório permitir o acesso à sua localização GPS para abrir e responder o formulário.");
+            document.getElementById('gps-info').innerText = "Acesso Bloqueado: Permissão de GPS negada.";
+            reject(error);
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      });
     }
 
-    // Autenticação de Usuário
+    // Autenticação de Usuário e Verificação de GPS
     document.getElementById('form-login').addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('login-email').value;
@@ -211,58 +226,77 @@
       const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
       if (error) {
         alert('Falha na autenticação: ' + error.message);
-      } else {
+        return;
+      }
+
+      // Tenta obter o GPS obrigatoriamente antes de exibir o formulário
+      try {
+        await capturarGPSObrigatorio();
         document.getElementById('login-screen').classList.add('hidden');
         document.getElementById('app-screen').classList.remove('hidden');
-        capturarGPS();
+      } catch (err) {
+        console.warn("Acesso negado: GPS não autorizado.", err);
       }
     });
 
-   // Envio do Formulário
-document.getElementById('form-pesquisa').addEventListener('submit', async (e) => {
-  e.preventDefault();
+    // Envio do Formulário
+    document.getElementById('form-pesquisa').addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-  const senadoresSel = Array.from(document.querySelectorAll('input[name="senador"]:checked')).map(el => el.value);
+      // Checagem de segurança extra para garantir que as coordenadas existem
+      if (!document.getElementById('lat').value || !document.getElementById('long').value) {
+        alert("Coordenadas GPS não encontradas. É necessário permitir o GPS para enviar.");
+        return;
+      }
 
-  const payload = {
-    lat: document.getElementById('lat').value,
-    long: document.getElementById('long').value,
-    nome_completo: document.getElementById('nome_completo').value,
-    endereco_numero: document.getElementById('endereco_numero').value,
-    bairro: document.getElementById('bairro').value,
-    telefone: document.getElementById('telefone').value,
-    num_pessoas: document.getElementById('num_pessoas').value,
-    governador: document.querySelector('input[name="gov"]:checked')?.value,
-    senadores: senadoresSel,
-    deputado_estadual: document.getElementById('deputado_estadual').value,
-    deputado_federal: document.getElementById('deputado_federal').value,
-    presidente: document.querySelector('input[name="pres"]:checked')?.value,
-    avaliacao_gov: document.querySelector('input[name="aval_gov"]:checked')?.value,
-    observacao: document.getElementById('observacao').value,
-    demanda_saude: document.querySelector('input[name="demanda_saude"]:checked')?.value,
-    saude_nome: document.getElementById('saude_nome').value,
-    saude_cpf: document.getElementById('saude_cpf').value,
-    saude_endereco: document.getElementById('saude_endereco').value,
-    saude_telefone: document.getElementById('saude_telefone').value,
-    // CORREÇÃO AQUI: Envia null se a data não for preenchida
-    saude_data_nasc: document.getElementById('saude_data_nasc').value || null,
-    saude_cartao_sus: document.getElementById('saude_cartao_sus').value,
-    saude_procedimento: document.getElementById('saude_procedimento').value,
-    saude_requisicao: document.querySelector('input[name="saude_requisicao"]:checked')?.value,
-    saude_disponibilidade: document.querySelector('input[name="saude_disponibilidade"]:checked')?.value
-  };
+      const senadoresSel = Array.from(document.querySelectorAll('input[name="senador"]:checked')).map(el => el.value);
+      const getVal = (id) => document.getElementById(id).value.trim() || null;
 
-  const { error } = await _supabase.from('respostas').insert([payload]);
+      const payload = {
+        lat: getVal('lat'),
+        long: getVal('long'),
+        nome_completo: getVal('nome_completo'),
+        endereco_numero: getVal('endereco_numero'),
+        bairro: getVal('bairro'),
+        telefone: getVal('telefone'),
+        num_pessoas: getVal('num_pessoas') ? parseInt(getVal('num_pessoas')) : null,
+        governador: document.querySelector('input[name="gov"]:checked')?.value || null,
+        senadores: senadoresSel,
+        deputado_estadual: getVal('deputado_estadual'),
+        deputado_federal: getVal('deputado_federal'),
+        presidente: document.querySelector('input[name="pres"]:checked')?.value || null,
+        avaliacao_gov: document.querySelector('input[name="aval_gov"]:checked')?.value || null,
+        observacao: getVal('observacao'),
+        demanda_saude: document.querySelector('input[name="demanda_saude"]:checked')?.value || null,
+        saude_nome: getVal('saude_nome'),
+        saude_cpf: getVal('saude_cpf'),
+        saude_endereco: getVal('saude_endereco'),
+        saude_telefone: getVal('saude_telefone'),
+        saude_data_nasc: getVal('saude_data_nasc'),
+        saude_cartao_sus: getVal('saude_cartao_sus'),
+        saude_procedimento: getVal('saude_procedimento'),
+        saude_requisicao: document.querySelector('input[name="saude_requisicao"]:checked')?.value || null,
+        saude_disponibilidade: document.querySelector('input[name="saude_disponibilidade"]:checked')?.value || null
+      };
 
-  if (error) {
-    alert('Erro ao salvar resposta: ' + error.message);
-  } else {
-    alert('Questionário gravado com sucesso!');
-    document.getElementById('form-pesquisa').reset();
-    toggleSaude(false);
-    capturarGPS();
-  }
-});
+      const { error } = await _supabase.from('respostas').insert([payload]);
+
+      if (error) {
+        alert('Erro ao salvar resposta: ' + error.message);
+      } else {
+        alert('Questionário gravado com sucesso!');
+        document.getElementById('form-pesquisa').reset();
+        toggleSaude(false);
+        
+        // Recaptura a localização obrigatoriamente para o próximo preenchimento
+        try {
+          await capturarGPSObrigatorio();
+        } catch (err) {
+          document.getElementById('app-screen').classList.add('hidden');
+          document.getElementById('login-screen').classList.remove('hidden');
+        }
+      }
+    });
   </script>
 </body>
 </html>
